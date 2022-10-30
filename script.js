@@ -35,6 +35,7 @@ setInterval(manterConection, 5000);
 let listaCompleta = [];
 let listaUsavel = [];
 function rendGood(list){
+    ul.innerHTML = '';
     listaCompleta = list.data;
     filtrar(listaCompleta);
     for(let i = 0; i<listaUsavel.length; i++){
@@ -62,7 +63,12 @@ function filtrar(lista){
 }
 let tipo = '';
 const ul = document.querySelector('ul')
-ul.innerHTML = '';
+const nomeDescartavel = document.querySelector('input');
+nomeDescartavel.addEventListener("keydown", function (e) {
+    if (e.code === "Enter") { 
+        sendMsg();
+    }
+})
 function renderizar(){
     const promise2 = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
     promise2.then(rendGood);
@@ -71,4 +77,23 @@ function renderizar(){
 }
 renderizar()
 setInterval(renderizar, 3000)
-//funcao de enviar mensagem (q terminar renderizando)
+
+function sendMsg(){
+    const input = document.querySelector('input').value
+    let objmsg = {
+        from: nick,
+        to: "Todos",
+        text: `${input}`,
+        type: "message"
+    }
+    const promise3 = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', objmsg)
+    promise3.then(msgEnviada)
+    promise3.catch(msgNaoEnviada)
+}
+function msgEnviada(){
+    document.querySelector('input').value = ''
+    renderizar();
+}
+function msgNaoEnviada(){
+    window.location.reload()
+}

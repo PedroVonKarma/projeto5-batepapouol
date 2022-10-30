@@ -152,3 +152,6 @@ strong{
 ::-webkit-scrollbar {
     display: none;
 }
+.air:hover{
+    cursor: pointer;
+}
