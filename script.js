@@ -35,31 +35,12 @@ setInterval(manterConection, 5000);
 let listaCompleta = [];
 let listaUsavel = [];
 function rendGood(list){
-    listaCompleta = list;
-}
-function filtrar(obj){
-    if(obj.to === "Todos"){
-        return true
-    } else if(obj.to === nick){
-        return true
-    } else {
-        return false
-    }
-}
-let tipo = '';
-function renderizar(){
-    const promise2 = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-    promise2.then(rendGood);
-    listaUsavel = listaCompleta.filter(filtrar)
-    
-    
-    const ul = document.querySelector('ul')
-    ul.innerHTML = '';
+    listaCompleta = list.data;
+    filtrar(listaCompleta);
     for(let i = 0; i<listaUsavel.length; i++){
         if(listaUsavel[i].type === "status"){
             tipo = 'gray'
-        }
-        if(listaUsavel[i].type === "private_message"){
+        } else if(listaUsavel[i].type === "private_message"){
             tipo = 'red'
         } else{
             tipo = '';
@@ -68,7 +49,26 @@ function renderizar(){
     <div class="text"><span>${listaUsavel[i].time}  </span><strong>${listaUsavel[i].from}</strong> para <strong>${listaUsavel[i].to}</strong>: ${listaUsavel[i].text}</div>
 </li>`
     }
+    const last = ul.lastChild
+    last.scrollIntoView();
 }
-renderizar();
-
+function filtrar(lista){
+    listaUsavel = [];
+    for(let j = 0; j<100; j++){
+        if(lista[j].to === "Todos" || lista[j].to === nick){
+            listaUsavel.push(lista[j])
+        }
+    }
+}
+let tipo = '';
+const ul = document.querySelector('ul')
+ul.innerHTML = '';
+function renderizar(){
+    const promise2 = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
+    promise2.then(rendGood);
+    
+    
+}
+renderizar()
+setInterval(renderizar, 3000)
 //funcao de enviar mensagem (q terminar renderizando)
