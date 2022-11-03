@@ -46,7 +46,7 @@ function rendGood(list){
         } else{
             tipo = '';
         }
-        ul.innerHTML += `<li class="${tipo}">
+        ul.innerHTML += `<li data-test="message" class="${tipo}">
     <div class="text"><span>${listaUsavel[i].time}  </span><strong>${listaUsavel[i].from}</strong> para <strong>${listaUsavel[i].to}</strong>: ${listaUsavel[i].text}</div>
 </li>`
     }
